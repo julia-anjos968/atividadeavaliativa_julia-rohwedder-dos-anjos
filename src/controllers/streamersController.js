@@ -2,11 +2,39 @@ import dados from "../models/dados.js";
 const { streamers } = dados;
 
 const getAllStreamers = (req, res) => {
+ const { plataforma, categoria, pais, seguidores } = req.body;
+
+ let resultado = streamers;
+    if (plataforma) {
+        resultado = resultado.filter(streamer => 
+            streamer.plataforma.toLowerCase().includes(plataforma.toLowerCase())
+        );
+    }
+
+    if (categoria) {
+        resultado = resultado.filter(streamer => 
+            streamer.categoria.toLowerCase() === categoria.toLowerCase()
+        );
+    }
+
+    if (pais) {
+        resultado = resultado.filter(streamer => 
+            streamer.pais.toLowerCase() === pais.toLowerCase()
+        );
+    }
+
+    if (seguidores) {
+        resultado = resultado.filter(streamer => 
+            streamer.seguidores.toLowerCase() = seguidores.toLowerCase()
+        );
+    }
+
     res.status(200).json({
-        total: streamers.length,
-        streamers: streamers
-    })
-}
+        total: resultado.length,
+        streamer: resultado
+    });
+};
+
 
 const getById = (req, res) => {
     let id = parseInt(req.params.id);
